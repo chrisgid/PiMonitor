@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Home{% endblock %}
+
+
+{% block body %}
+<h1>PiMonitor</h1>
+
+<p>Network public IP address: <strong>{{ networkIp }}</strong></p>
+<p>Your IP address: <strong>{{ requestIp }}</strong></p>
+
+<canvas id="upDownChart" width="400" height="400"></canvas>
+
+<!-- <label for="period">Period:</label>
+
+<select name="period" id="period">
+    <option>Hourly</option>
+    <option>Daily</option>
+    <option>Weekly</option>
+    <option>Monthly</option>
+</select> -->
+{% endblock %}

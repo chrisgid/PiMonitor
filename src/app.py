@@ -1,12 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import ipretriever
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    ip = ipretriever.getIp()
-    return render_template('index.html', ip=ip)
+    networkIp = ipretriever.getIp()
+    requestIp = request.remote_addr
+    return render_template('home.html', networkIp=networkIp, requestIp=requestIp)
 
 
 @app.route('/hello/')
