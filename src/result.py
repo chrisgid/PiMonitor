@@ -1,4 +1,6 @@
 import random
+from datetime import datetime
+from datetime import timedelta
 
 class Result:
     UP = "up"
@@ -18,16 +20,18 @@ def get_results(test=False):
 def get_test_results():
     results = []
 
-    for i in range(10):
-        timestamp = '2020-08-14T0' + str(i) + ':00:00Z'
+    startTime = datetime.now()
+
+    for i in range(30):
+        timestamp = (startTime-timedelta(hours=i)).isoformat()
         bytesPerSecond = random.randrange(3000000, 5000000)
         upDown = Result.DOWN
 
         result = Result(timestamp, bytesPerSecond, upDown)
         results.append(result.__dict__)
 
-    for i in range(10):
-        timestamp = '2020-08-14T0' + str(i) + ':00:00Z'
+    for i in range(30):
+        timestamp = (startTime-timedelta(hours=i)).isoformat()
         bytesPerSecond = random.randrange(500000, 2000000)
         upDown = Result.UP
 
