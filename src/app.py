@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    networkIp = ipretriever.getIp()
+    networkIp = ipretriever.get_ip()
     requestIp = request.remote_addr
     return render_template('home.html', networkIp=networkIp, requestIp=requestIp)
 

@@ -2,7 +2,7 @@ import requests
 
 url = 'https://api.ipify.org'
 
-def getIp():
+def get_ip():
     r = requests.get(url)
 
     if (r.status_code == requests.codes.ok):
@@ -12,4 +12,4 @@ def getIp():
     
 
 if __name__ == '__main__':
-    getIp()
+    get_ip()
