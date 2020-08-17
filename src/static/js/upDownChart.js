@@ -3,7 +3,7 @@ var testData = {
         {
             label: 'Download Speed',
             data: [{
-                t: new Date(2020, 8, 13, 9),
+                t: new Date('2020-08-14T08:00:00Z'),
                 y: 22
             }, 
             {
@@ -83,8 +83,20 @@ var myChart = new Chart(ctx, {
         },
         tooltips: {
             callbacks: {
-              label: (item) => item.yLabel + 'Mb/s',
+              label: (item) => item.yLabel + ' Mb/s',
             },
-        },
+        }
     }
+});
+
+
+fetch('/api/result').then(function(response) {
+    return response.json();
+}).then(function(data) {
+    
+    // transform data for chart here
+    
+    console.log(data);
+}).catch(function() {
+    console.log("Error getting data from result API");
 });
