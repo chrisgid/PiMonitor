@@ -1,5 +1,31 @@
 from datetime import datetime
 from json import loads
+from subprocess import Popen, PIPE
+from sys import platform
+
+
+def run_speedtest():
+
+    if platform == 'linux' or platform == 'linux2':
+        print("On linux")
+        ## run linux speedtest
+    elif platform == "win32":
+        print("On windows")
+        ## run windows speedtest
+    else:
+        print("Unsupported platform")
+
+
+    process = Popen(['speedtest.exe', "--format=json"], stdout=PIPE)
+    (output, err) = process.communicate()
+    exit_code = process.wait()
+
+    if exit_code == 0:
+        print("Success!")
+        ## return a Speedtest
+    else:
+        print("Error")
+        ## return a zero-value Speedtest
 
 
 class Speedtest:
