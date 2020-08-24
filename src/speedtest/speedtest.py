@@ -5,23 +5,23 @@ from sys import platform
 
 
 def run_speedtest():
+    executable_name = ''
 
     if platform == 'linux' or platform == 'linux2':
-        print("On linux")
-        ## run linux speedtest
+        ## Assume on raspberry pi
+        executable_name = 'speedtest_arm32'
     elif platform == "win32":
-        print("On windows")
-        ## run windows speedtest
+        executable_name = 'speedtest.exe'
     else:
         print("Unsupported platform")
 
 
-    process = Popen(['speedtest.exe', "--format=json"], stdout=PIPE)
+    process = Popen([executable_name, "--format=json"], stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
     if exit_code == 0:
-        print("Success!")
+        return Speedtest(output)
         ## return a Speedtest
     else:
         print("Error")
@@ -31,12 +31,12 @@ def run_speedtest():
 class Speedtest:
     def __init__(self, json: str):
         self.raw = json
-        self.speedtest = loads(self.raw)
+        self.speed_dict = loads(self.raw)
 
 
     @property
     def timestamp(self) -> datetime:
-        return datetime.strptime(self.speedtest["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+        return datetime.strptime(self.speed_dict["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
 
 
     @property
@@ -45,7 +45,7 @@ class Speedtest:
         if not self.is_result:
             return 0
 
-        return self.speedtest["download"]["bandwidth"]
+        return self.speed_dict["download"]["bandwidth"]
 
 
     @property
@@ -54,7 +54,7 @@ class Speedtest:
         if not self.is_result:
             return 0
         
-        return self.speedtest["upload"]["bandwidth"]
+        return self.speed_dict["upload"]["bandwidth"]
 
 
     @property
@@ -63,19 +63,19 @@ class Speedtest:
         if not self.is_result:
             return 0
         
-        return self.speedtest["ping"]["latency"]
+        return self.speed_dict["ping"]["latency"]
 
 
     @property
     def packet_loss(self) -> int:
-        """Number of packets lost in the speedtest"""
+        """Packet loss as a percentage in the speedtest"""
         if not self.is_result:
             return 0
         
-        return self.speedtest["packetLoss"]
+        return self.speed_dict["packetLoss"]
     
 
     @property
     def is_result(self) -> bool:
         """True if the speedtest is a result, false if it's an error"""
-        return self.speedtest.get("type") == "result"
+        return self.speed_dict.get("type") == "result"
