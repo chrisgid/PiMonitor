@@ -28,7 +28,7 @@ def run_speedtest():
         ## return a zero-value Speedtest
 
 
-class Speedtest:
+class Speedtest(object):
     def __init__(self, json: str):
         self.raw = json
         self.speed_dict = loads(self.raw)
