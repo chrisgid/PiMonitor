@@ -3,30 +3,45 @@ from sqlite3 import Error
 from network import Speedtest
 
 
-
 class Database(object):
 
     def __init__(self, db_file):
         self.db_file = db_file
         self.conn = None
 
-
     def connect(self):
         if self.conn is None:
             self.conn = create_connection(self.db_file)
             create_table(self.conn, _sql_create_speedtests_table)
 
-
     def add_speedtest(self, speedtest: Speedtest):
         if self.conn is not None:
             create_speedtest(self.conn, speedtest.as_tuple())
 
+    def get_all_speedtests(self):
+        if self.conn is not None:
+            cur = self.conn.cursor()
+            cur.execute(f"SELECT * FROM {_speedtests_table}")
+
+            rows = cur.fetchall()
+
+            speedtests = []
+
+            for row in rows:
+                timestamp = row[1]
+                download = row[2]
+                upload = row[3]
+                latency = row[4]
+
+                speedtests.append(Speedtest(timestamp, download, upload, latency))
+
+            return speedtests
 
 
 def create_connection(db_file):
     conn = None
     try:
-        conn = sqlite3.connect(db_file)
+        conn = sqlite3.connect(db_file, detect_types=sqlite3.PARSE_DECLTYPES)
         return conn
     except Error as e:
         print(e)
@@ -55,8 +70,9 @@ def create_speedtest(conn, speedtest):
 _speedtests_table = "speedtests"
 _sql_create_speedtests_table = f""" CREATE TABLE IF NOT EXISTS {_speedtests_table} (
                                         id integer PRIMARY KEY,
-                                        timestamp text NOT NULL,
+                                        timestamp timestamp NOT NULL,
                                         download integer,
                                         upload integer,
                                         latency real
                                     ); """
+
