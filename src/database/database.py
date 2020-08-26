@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+from network import Speedtest
 
 
 
@@ -13,7 +14,7 @@ class Database(object):
     def connect(self):
         if self.conn is None:
             self.conn = create_connection(self.db_file)
-            create_table(self.conn, sql_create_speedtests_table)
+            create_table(self.conn, _sql_create_speedtests_table)
 
 
     def add_speedtest(self, speedtest):
@@ -51,10 +52,12 @@ def create_speedtest(conn, speedtest):
     return cur.lastrowid
 
 
-sql_create_speedtests_table = """ CREATE TABLE IF NOT EXISTS speedtests (
+_speedtests_table = "speedtests"
+_sql_create_speedtests_table = f""" CREATE TABLE IF NOT EXISTS {_speedtests_table} (
                                         id integer PRIMARY KEY,
                                         timestamp text NOT NULL,
-                                        download integer,
+                                        download integer,W
                                         upload integer,
                                         latency real
+                                        packetloss real
                                     ); """

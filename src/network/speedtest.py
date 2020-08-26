@@ -44,5 +44,6 @@ class Speedtest(object):
             self.timestamp, 
             self.download, 
             self.upload,
-            self.latency
+            self.latency,
+            self.packet_loss
         )
