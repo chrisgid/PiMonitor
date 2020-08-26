@@ -1,72 +1,42 @@
 from datetime import datetime
 from json import loads
 from subprocess import Popen, PIPE
-from sys import platform
+
+
 
 def run_speedtest():
-    executable_name = 'speedtest'
-
-    process = Popen([executable_name, "--format=json"], stdout=PIPE)
+    process = Popen(['speedtest', "--format=json"], stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
     if exit_code == 0:
-        return Speedtest(output)
+        return Speedtest.from_json(output)
     else:
-        print("Error")
+        return Speedtest(datetime.now)
+
 
 
 class Speedtest(object):
-    def __init__(self, json: str):
-        self.raw = json
-        self.speed_dict = loads(self.raw)
+    def __init__(self, timestamp: datetime, download: int=0, upload: int=0, latency: float=0, packet_loss: float=0):
+        self.timestamp = timestamp
+        self.download = download
+        self.upload = upload
+        self.latency = latency
+        self.packet_loss = packet_loss
 
 
-    @property
-    def timestamp(self) -> datetime:
-        return datetime.strptime(self.speed_dict["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
-
-
-    @property
-    def download(self) -> int:
-        """Download speed of the speedtest in bytes per second"""
-        if not self.is_result:
-            return 0
-
-        return self.speed_dict["download"]["bandwidth"]
-
-
-    @property
-    def upload(self) -> int:
-        """Upload speed of the speedtest in bytes per second"""
-        if not self.is_result:
-            return 0
+    @classmethod
+    def from_json(cls, json: str):
+        speed_dict = loads(json)
+        timestamp = datetime.strptime(speed_dict["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+        if speed_dict.get("type") != "result":
+            return cls(timestamp)
         
-        return self.speed_dict["upload"]["bandwidth"]
-
-
-    @property
-    def latency(self) -> float:
-        """Latency of the speedtest in milliseconds"""
-        if not self.is_result:
-            return 0
-        
-        return self.speed_dict["ping"]["latency"]
-
-
-    @property
-    def packet_loss(self) -> int:
-        """Packet loss as a percentage in the speedtest"""
-        if not self.is_result:
-            return 0
-        
-        return self.speed_dict["packetLoss"]
-    
-
-    @property
-    def is_result(self) -> bool:
-        """True if the speedtest is a result, false if it's an error"""
-        return self.speed_dict.get("type") == "result"
+        download = speed_dict["download"]["bandwidth"]
+        upload = speed_dict["upload"]["bandwidth"]
+        latency = speed_dict["ping"]["latency"]
+        packet_loss = speed_dict["packetLoss"]
+        return cls(timestamp, download, upload, latency, packet_loss)
 
 
     def as_tuple(self) -> tuple:
@@ -76,4 +46,3 @@ class Speedtest(object):
             self.upload,
             self.latency
         )
-
