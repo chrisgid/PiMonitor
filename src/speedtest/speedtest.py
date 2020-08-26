@@ -3,18 +3,8 @@ from json import loads
 from subprocess import Popen, PIPE
 from sys import platform
 
-
 def run_speedtest():
-    executable_name = ''
-
-    if platform == 'linux' or platform == 'linux2':
-        ## Assume on raspberry pi
-        executable_name = 'speedtest_arm32'
-    elif platform == "win32":
-        executable_name = 'speedtest.exe'
-    else:
-        print("Unsupported platform")
-
+    executable_name = 'speedtest'
 
     process = Popen([executable_name, "--format=json"], stdout=PIPE)
     (output, err) = process.communicate()
@@ -22,10 +12,8 @@ def run_speedtest():
 
     if exit_code == 0:
         return Speedtest(output)
-        ## return a Speedtest
     else:
         print("Error")
-        ## return a zero-value Speedtest
 
 
 class Speedtest(object):
@@ -79,3 +67,13 @@ class Speedtest(object):
     def is_result(self) -> bool:
         """True if the speedtest is a result, false if it's an error"""
         return self.speed_dict.get("type") == "result"
+
+
+    def as_tuple(self) -> tuple:
+        return (
+            self.timestamp, 
+            self.download, 
+            self.upload,
+            self.latency
+        )
+
