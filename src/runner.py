@@ -1,9 +1,9 @@
 from database import Database
-import speedtest
+import network
 
 
 def main():
-    result = speedtest.run_speedtest()
+    result = network.run_speedtest()
 
     db = Database('database.db')
     db.connect()
