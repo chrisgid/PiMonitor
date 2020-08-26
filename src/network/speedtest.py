@@ -17,12 +17,11 @@ def run_speedtest():
 
 
 class Speedtest(object):
-    def __init__(self, timestamp: datetime, download: int=0, upload: int=0, latency: float=0, packet_loss: float=0):
+    def __init__(self, timestamp: datetime, download: int=0, upload: int=0, latency: float=0):
         self.timestamp = timestamp
         self.download = download
         self.upload = upload
         self.latency = latency
-        self.packet_loss = packet_loss
 
 
     @classmethod
@@ -35,8 +34,7 @@ class Speedtest(object):
         download = speed_dict["download"]["bandwidth"]
         upload = speed_dict["upload"]["bandwidth"]
         latency = speed_dict["ping"]["latency"]
-        packet_loss = speed_dict["packetLoss"]
-        return cls(timestamp, download, upload, latency, packet_loss)
+        return cls(timestamp, download, upload, latency)
 
 
     def as_tuple(self) -> tuple:
@@ -44,6 +42,5 @@ class Speedtest(object):
             self.timestamp, 
             self.download, 
             self.upload,
-            self.latency,
-            self.packet_loss
+            self.latency
         )

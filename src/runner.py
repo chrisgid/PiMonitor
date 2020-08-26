@@ -1,4 +1,4 @@
-from database import Database
+from storage import Database
 import network
 
 
@@ -7,7 +7,7 @@ def main():
 
     db = Database('database.db')
     db.connect()
-    db.add_speedtest(result.as_tuple)
+    db.add_speedtest(result)
 
 
 if __name__ == '__main__':

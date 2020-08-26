@@ -17,9 +17,9 @@ class Database(object):
             create_table(self.conn, _sql_create_speedtests_table)
 
 
-    def add_speedtest(self, speedtest):
+    def add_speedtest(self, speedtest: Speedtest):
         if self.conn is not None:
-            create_speedtest(self.conn, speedtest)
+            create_speedtest(self.conn, speedtest.as_tuple())
 
 
 
@@ -56,8 +56,7 @@ _speedtests_table = "speedtests"
 _sql_create_speedtests_table = f""" CREATE TABLE IF NOT EXISTS {_speedtests_table} (
                                         id integer PRIMARY KEY,
                                         timestamp text NOT NULL,
-                                        download integer,W
+                                        download integer,
                                         upload integer,
                                         latency real
-                                        packetloss real
                                     ); """
