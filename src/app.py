@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    networkIp = network.get_ip()
-    requestIp = request.remote_addr
-    return render_template('home.html', networkIp=networkIp, requestIp=requestIp)
+    network_ip = network.get_ip()
+    request_ip = request.remote_addr
+    return render_template('home.html', network_ip=network_ip, request_ip=request_ip)
 
 
 @app.route('/api/result')
@@ -20,7 +20,7 @@ def result():
 
 @app.route('/api/speedtest')
 def run_speedtest():
-    '''Run a speedtest and output the result. For testing purposes'''
+    """Run a speedtest and output the result. For testing purposes"""
     return jsonify(network.run_speedtest().__dict__)
 
 
