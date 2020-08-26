@@ -11,7 +11,7 @@ class Database(object):
 
 
     def connect(self):
-        if self.conn is not None:
+        if self.conn is None:
             self.conn = create_connection(self.db_file)
             create_table(self.conn, sql_create_speedtests_table)
 
@@ -42,7 +42,7 @@ def create_table(conn, create_table_sql):
 
 
 def create_speedtest(conn, speedtest):
-    sql = ''' INSERT INTO speedtests(timestamp,upload,download,latency)
+    sql = ''' INSERT INTO speedtests(timestamp,download,upload,latency)
             VALUES(?,?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, speedtest)
