@@ -52,4 +52,5 @@ Packet Loss:     0.0%
 4. Run (development web server):
 
 `>cd PiMonitor/src`
+
 `>python3 app.py`
