@@ -6,7 +6,7 @@ A simple network speed monitor designed to run on a Raspberry Pi
 
 ### Raspberry PI
 
-1. Install speedtest and dependencies:
+1. Install speedtest and dependencies: (as shown here https://www.speedtest.net/apps/cli)
 
 ```
 sudo apt-get install gnupg1 apt-transport-https dirmngr
