@@ -1,5 +1,7 @@
 # PiMonitor
 
+A simple network speed monitor designed to run on a Raspberry Pi
+
 ## Setup
 
 ### Windows
