@@ -3,9 +3,13 @@ import network
 
 
 def main():
+    run()
+
+
+def run():
     result = network.run_speedtest()
 
-    db = Database('database.db')
+    db = Database.from_config()
     db.connect()
     db.add_speedtest(result)
 

@@ -1,0 +1,4 @@
+{
+  "dbLocation" : "database.db",
+  "flask.debug": "false"
+}

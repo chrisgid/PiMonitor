@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from sqlite3 import Error
 from network import Speedtest
@@ -36,6 +37,13 @@ class Database(object):
                 speedtests.append(Speedtest(timestamp, download, upload, latency))
 
             return speedtests
+
+    @classmethod
+    def from_config(cls):
+        with open("config.json") as json_config:
+            data = json.load(json_config)
+            
+        return cls(data["dbLocation"])
 
 
 def create_connection(db_file):

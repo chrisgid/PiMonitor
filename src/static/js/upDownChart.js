@@ -56,7 +56,7 @@ fetch('/api/result').then(function(response) {
 
         var point = {
             t: new Date(result.timestamp),
-            y: Math.round(result.bytesPerSecond / 125000)
+            y: Math.round(result.value / 125000)
         };
         if (result.type == 'up') {
             uploadDataset.data.push(point);
