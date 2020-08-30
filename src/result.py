@@ -33,8 +33,8 @@ def get_results(start: datetime=None, end: datetime=None, test=False, all_result
         return
 
     for speedtest in speedtests:
-        results.append(Result(speedtest.timestamp, speedtest.download, Result.UP).as_dict())
-        results.append(Result(speedtest.timestamp, speedtest.upload, Result.DOWN).as_dict())
+        results.append(Result(speedtest.timestamp, speedtest.download, Result.DOWN).as_dict())
+        results.append(Result(speedtest.timestamp, speedtest.upload, Result.UP).as_dict())
         results.append(Result(speedtest.timestamp, speedtest.latency, Result.LATENCY).as_dict())
 
     return results
