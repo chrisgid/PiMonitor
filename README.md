@@ -1,6 +1,30 @@
 # PiMonitor
 
+A simple network speed monitor designed to run on a Raspberry Pi
+
 ## Setup
+
+### Raspberry PI
+
+1. Install speedtest and dependencies: (as shown here https://www.speedtest.net/apps/cli)
+
+```
+sudo apt-get install gnupg1 apt-transport-https dirmngr
+export INSTALL_KEY=379CE192D401AB61
+export DEB_DISTRO=$(lsb_release -sc)
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
+echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
+sudo apt-get update
+sudo apt-get install speedtest
+```
+
+2. Install requirements:
+
+`$ pip3 install -r requirements.txt`
+
+3. Run (development web server):
+
+`$ python3 app.py`
 
 ### Windows
 
@@ -27,45 +51,6 @@ Packet Loss:     0.0%
 
 4. Run (development web server):
 
+`>cd PiMonitor/src`
+
 `>python3 app.py`
-
-
-### Raspberry PI
-
-1. Install speedtest and dependencies:
-
-```
-sudo apt-get install gnupg1 apt-transport-https dirmngr
-export INSTALL_KEY=379CE192D401AB61
-export DEB_DISTRO=$(lsb_release -sc)
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
-echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
-sudo apt-get update
-sudo apt-get install speedtest
-```
-
-2. Install requirements:
-
-`$ pip3 install -r requirements.txt`
-
-3. Run (development web server):
-
-`$ python3 app.py`
-
-## Remote connection to Raspberry Pi
-
-Ensure the Pi has SSH enabled:
-
-`sudo systemctl enable ssh`
-
-`sudo systemctl start ssh`
-
-**Transferring files:**
-
-`scp file.txt pi@raspberrypi:~`
-
-**Connect to terminal (SSH):**
-
-`ssh pi@raspberrypi`
-
-(Substitute `raspberrypi` for the Pi's IP address)
