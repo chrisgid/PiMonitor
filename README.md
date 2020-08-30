@@ -40,7 +40,7 @@ sudo apt-get install speedtest
 
 2. Ensure `speedtest` is available on PATH:
 
-    (if it's not, use `set PATH=%PATH%;C:\your\path\here\` where `C:\your\path\here\` is the path to the directory containing `speedtest.exe`)
+    (if it's not, use [this guide](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/) to add the directory containing `speedtest.exe` to PATH)
 
 ```
 C:\>speedtest
