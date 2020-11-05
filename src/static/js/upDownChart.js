@@ -23,10 +23,10 @@ var downloadDataset = {
 };
 
 
-var ctx = document.getElementById('upDownChart').getContext('2d');
-var chart = new Chart(ctx, {
+var downCtx = document.getElementById('downChart').getContext('2d');
+var downChart = new Chart(downCtx, {
     type: 'line',
-    data: { datasets: [ downloadDataset, uploadDataset ]},
+    data: { datasets: [ downloadDataset ]},
     options: {
         scales: {
             xAxes: [{
@@ -49,7 +49,35 @@ var chart = new Chart(ctx, {
     }
 });
 
-fetch('/api/result').then(function(response) {
+var upCtx = document.getElementById('upChart').getContext('2d');
+var upChart = new Chart(upCtx, {
+    type: 'line',
+    data: { datasets: [ uploadDataset ]},
+    options: {
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'hour'
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        tooltips: {
+            callbacks: {
+            label: (item) => item.yLabel + ' Mb/s',
+            },
+        }
+    }
+});
+
+
+
+fetch('/api/results').then(function(response) {
     return response.json();
 }).then(function(results) {
     results.forEach(result => {
@@ -65,7 +93,8 @@ fetch('/api/result').then(function(response) {
             downloadDataset.data.push(point)
         }
     });
-    chart.update();
+    downChart.update();
+    upChart.update();
 }).catch(function() {
         console.log("Error getting data from result API");
 });
