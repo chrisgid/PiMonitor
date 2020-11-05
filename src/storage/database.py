@@ -1,3 +1,4 @@
+import datetime
 import json
 import sqlite3
 from sqlite3 import Error
@@ -24,6 +25,28 @@ class Database(object):
             cur = self.conn.cursor()
             cur.execute(f"SELECT * FROM {_speedtests_table}")
 
+            rows = cur.fetchall()
+
+            speedtests = []
+
+            for row in rows:
+                timestamp = row[1]
+                download = row[2]
+                upload = row[3]
+                latency = row[4]
+
+                speedtests.append(Speedtest(timestamp, download, upload, latency))
+
+            return speedtests
+
+    def get_speedtests(self, start: datetime, end: datetime):
+        if self.conn is not None:
+            cur = self.conn.cursor()
+
+            sql = f'''SELECT * FROM {_speedtests_table} WHERE timestamp BETWEEN ? AND ?'''
+            args = (start, end)
+            cur.execute(sql, args)
+                            
             rows = cur.fetchall()
 
             speedtests = []

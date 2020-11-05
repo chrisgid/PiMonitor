@@ -30,7 +30,7 @@ def get_results(start: datetime=None, end: datetime=None, test=False, all_result
     if all_results:
         speedtests = db.get_all_speedtests()
     else:
-        return
+        speedtests = db.get_speedtests(start, end)
 
     for speedtest in speedtests:
         results.append(Result(speedtest.timestamp, speedtest.download, Result.DOWN).as_dict())

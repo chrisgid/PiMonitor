@@ -3,6 +3,7 @@ from result import get_results
 import network
 import runner
 import json
+import datetime
 
 app = Flask(__name__)
 
@@ -14,9 +15,17 @@ def index():
     return render_template('home.html', network_ip=network_ip, request_ip=request_ip)
 
 
-@app.route('/api/result')
+@app.route('/api/results')
 def result():
     results = get_results(all_results=True)
+    return jsonify(results)
+
+
+@app.route('/api/results/recent/days/<int:days>')
+def result_days(days):
+    now = datetime.datetime.now()
+    now_minus_days = now - datetime.timedelta(days)
+    results = get_results(now_minus_days, now)
     return jsonify(results)
 
 
