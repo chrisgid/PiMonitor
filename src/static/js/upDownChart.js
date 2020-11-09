@@ -32,12 +32,7 @@ var downChart = new Chart(downCtx, {
             xAxes: [{
                 type: 'time',
                 time: {
-                    unit: 'hour'
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
+                    unit: 'day'
                 }
             }]
         },
@@ -45,6 +40,11 @@ var downChart = new Chart(downCtx, {
             callbacks: {
             label: (item) => item.yLabel + ' Mb/s',
             },
+        },
+        elements: {
+            line: {
+                tension: 0
+            }
         }
     }
 });
@@ -58,12 +58,7 @@ var upChart = new Chart(upCtx, {
             xAxes: [{
                 type: 'time',
                 time: {
-                    unit: 'hour'
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
+                    unit: 'day'
                 }
             }]
         },
@@ -71,20 +66,25 @@ var upChart = new Chart(upCtx, {
             callbacks: {
             label: (item) => item.yLabel + ' Mb/s',
             },
+        },
+        elements: {
+            line: {
+                tension: 0
+            }
         }
     }
 });
 
 
 
-fetch('/api/results').then(function(response) {
+fetch('/api/results/recent/days/7').then(function(response) {
     return response.json();
 }).then(function(results) {
     results.forEach(result => {
 
         var point = {
             t: new Date(result.timestamp),
-            y: Math.round(result.value / 125000)
+            y: bytesToMegabits(result.value, 2)
         };
         if (result.type == 'up') {
             uploadDataset.data.push(point);
@@ -99,5 +99,6 @@ fetch('/api/results').then(function(response) {
         console.log("Error getting data from result API");
 });
 
-
-
+function bytesToMegabits(value, decimalPlaces) {
+    return Math.round(((value / 125000) + Number.EPSILON) * (10 ** decimalPlaces)) / ( 10 ** decimalPlaces);
+}
